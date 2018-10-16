@@ -24,7 +24,6 @@ RUN apt-get -y update \
     && apt-get install -y microsoft-mlserver-config-rserve-9.3.0 \
     && apt-get install -y microsoft-mlserver-computenode-9.3.0 \
     && apt-get install -y microsoft-mlserver-webnode-9.3.0 \
-    && apt-get clean \
     && /opt/microsoft/mlserver/9.3.0/bin/R/activate.sh
 
 #### Tweaks to run onebox in Kubernetes
