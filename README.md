@@ -14,18 +14,18 @@ To use this repository, you should have the following:
 
 - An Azure subscription
 
-Once you have installed AzureRMR, follow the instructions in the "Registering a client app" vignette to create a service principal and register it with Azure Active Directory. You will use this service principal to communicate with Resource Manager and create the resources for this deployment.
+Once you have installed AzureRMR, follow the instructions in the ["Registering a client app"](https://github.com/cloudyr/AzureRMR/blob/master/inst/doc/aad_register.md) vignette to create a service principal and register it with Azure Active Directory. You will use this service principal to communicate with Resource Manager and create the resources for this deployment.
 
 
 ## Setting up your deployment
 
-First, you must set your credentials so that R can talk to Azure. Edit the file `creds.json` so that it contains the following information:
+First, you must set your credentials so that R can talk to Azure. Edit the file [`creds.json`](creds.json) so that it contains the following information:
 
 - Your Azure tenant ID
 - Your service principal client/app ID
 - Your service principal authentication secret.
 
-Next, edit the file `resource_specs.R` to contain the following:
+Next, edit the file [`resource_specs.R`](resource_specs.R) to contain the following:
 
 - Your subscription ID
 - The name of the resource group that will hold the resources created
@@ -39,7 +39,7 @@ Note that in general, you should _not_ run these scripts in an automated fashion
 
 ### Building the model image
 
-The script `00_build_image.R` trains a simple model (a random forest for house prices, using the Boston dataset). It then builds a Docker image containing:
+The script [`00_build_image.R`](00_build_image.R) trains a simple model (a random forest for house prices, using the Boston dataset). It then builds a Docker image containing:
 
 - Microsoft Machine Learning Server (only the R components)
 - The Azure CLI (necessary to use Model Operationalization)
