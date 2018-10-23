@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: mls-model
-        image: deployreg.azurecr.io/mls-model
+        image: registryname.azurecr.io/mls-model
         ports:
         - containerPort: 12800
         resources:
@@ -20,16 +20,4 @@ spec:
           limits:
             cpu: 500m
       imagePullSecrets:
-      - name: deployreg.azurecr.io
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mls-model-svc
-spec:
-  selector:
-    app: mls-model
-  type: LoadBalancer
-  ports:
-  - protocol: TCP
-    port: 12800
+      - name: deploy-registry

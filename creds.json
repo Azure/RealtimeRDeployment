@@ -1,0 +1,5 @@
+{
+    "tenant": "your tenant ID here",
+    "app": "your app/client ID here",
+    "secret": "your auth secret here"
+}
