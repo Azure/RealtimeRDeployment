@@ -59,8 +59,8 @@ RUN apt-get install -y make gcc gfortran
 RUN Rscript -e "install.packages('randomForest')"
 
 RUN mkdir /data
-COPY service.R /data
-COPY model.rds /data
+COPY data/service.R /data
+COPY data/model.rds /data
 WORKDIR /data
 
 ####

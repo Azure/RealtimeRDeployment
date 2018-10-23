@@ -12,7 +12,7 @@ unverified_handle <- function()
     class="handle")
 }
 
-# get login token
+# get login token: use same username/password as when creating the service
 response <- httr::POST(paste0(ingr_uri, "login"),
     body=list(username="admin", password="Microsoft@2018"),
     encode="json",
