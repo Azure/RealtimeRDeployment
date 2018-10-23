@@ -1,13 +1,16 @@
 library(AzureRMR)
 library(AzureContainers)
 
-# run the following after resources have been created ---
+# resource/service objects
 source("resource_specs.R")
 sub <- az_rm$
     new(config_file="creds.json")$
     get_subscription(sub_id)
 
 deployresgrp <- sub$get_resource_group(rg_name)
+
+
+### deploy predictive model as a service
 
 # push image to registry
 deployreg <- deployresgrp$

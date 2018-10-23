@@ -1,3 +1,6 @@
+library(AzureRMR)
+library(AzureContainers)
+
 # resource/service objects ---
 source("resource_specs.R")
 sub <- az_rm$
@@ -19,7 +22,7 @@ Sys.sleep(20)
 deployclus$helm("install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --set rbac.create=false")
 
 
-# install TLS certificate ---
+# install TLS certificate and ingress ---
 
 # find the IP address resource -- run this after an external IP has been assigned to the ingress controller
 deployclus$get("service", "--all-namespaces")
@@ -52,7 +55,6 @@ deployclus$helm(inst_certmgr)
 
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/cluster-issuer.yaml")))
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/certificates.yaml")))
-
 
 # deploy ingress controller
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/ingress.yaml")))
