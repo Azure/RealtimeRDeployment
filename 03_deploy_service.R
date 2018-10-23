@@ -36,3 +36,6 @@ deployclus$create("yaml/service.yaml")
 # check on deployment/service status
 deployclus$get("deployment")
 deployclus$get("service")
+
+# display the dashboard
+deployclus$show_dashboard()

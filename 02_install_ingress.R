@@ -21,11 +21,12 @@ deployclus$helm("init")
 Sys.sleep(20)
 deployclus$helm("install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --set rbac.create=false")
 
+deployclus$get("service", "--all-namespaces")
+
 
 # install TLS certificate and ingress ---
 
-# find the IP address resource -- run this after an external IP has been assigned to the ingress controller
-deployclus$get("service", "--all-namespaces")
+# get the IP address resource -- run this after an external IP has been assigned to the ingress controller
 
 cluster_resources <- sub$
     get_resource_group(deployclus_svc$properties$nodeResourceGroup)$
