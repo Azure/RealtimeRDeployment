@@ -12,7 +12,9 @@ To use this repository, you should have the following:
   * [AzureRMR](https://github.com/cloudyr/AzureRMR), a package that implements an interface to Azure Resource Manager
   * [AzureContainers](https://github.com/cloudyr/AzureContainers), an interface to Azure Container Registry (ACR) and Azure Kubernetes Service (AKS)
 
-- An Azure subscription
+- [Docker](https://www.docker.com/get-started), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [helm](https://www.helm.sh/) installed on your machine.
+
+- An Azure subscription.
 
 Once you have installed AzureRMR, follow the instructions in the ["Registering a client app"](https://github.com/cloudyr/AzureRMR/blob/master/inst/doc/aad_register.md) vignette to create a service principal and register it with Azure Active Directory. You will use this service principal to communicate with Resource Manager and create the resources for this deployment.
 
