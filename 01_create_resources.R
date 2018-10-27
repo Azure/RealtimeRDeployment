@@ -5,7 +5,7 @@ library(AzureContainers)
 
 source("resource_specs.R")
 deployresgrp <- az_rm$
-    new(config_file="~/creds.json")$
+    new(config_file="creds.json")$
     get_subscription(sub_id)$
     create_resource_group(rg_name, location=rg_loc)
 
