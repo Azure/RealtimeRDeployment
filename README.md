@@ -25,7 +25,7 @@ First, you must set your credentials so that R can talk to Azure. Edit the file 
 
 - Your Azure tenant ID
 - Your service principal client/app ID
-- Your service principal authentication secret.
+- Your service principal authentication password.
 
 Next, edit the file [`resource_specs.R`](resource_specs.R) to contain the following:
 
