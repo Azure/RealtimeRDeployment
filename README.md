@@ -16,7 +16,7 @@ To use this repository, you should have the following:
 
 - An Azure subscription.
 
-Once you have installed AzureRMR, follow the instructions in the ["Registering a client app"](https://github.com/cloudyr/AzureRMR/blob/master/static/aad_register.md) vignette to create a service principal and register it with Azure Active Directory. You will use this service principal to communicate with Resource Manager and create the resources for this deployment.
+If this is the first time you are using AzureRMR, follow the [instructions at that repo](https://github.com/cloudyr/AzureRMR/blob/master/README.md) to create a service principal and register it with Azure Active Directory. You will use this service principal to communicate with Resource Manager and create the resources for this deployment.
 
 
 ## Setting up your deployment
