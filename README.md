@@ -43,12 +43,12 @@ Note that in general, you should _not_ run these scripts in an automated fashion
 
 The script [`00_build_image.R`](00_build_image.R) trains a simple model (a random forest for house prices, using the Boston dataset). It then builds a Docker image containing:
 
-- Microsoft Machine Learning Server (only the R components)
+- Microsoft Machine Learning Server (only the R components).
 - The Azure CLI (necessary to use Model Operationalization)
 - the model object plus any packages necessary to use it (randomForest in this case)
 - a script that is run on container startup
 
-This image is about 2GB in size.
+This image is about 2GB in size. The MMLS install used here is licensed for development and testing purposes only. For a production image, see your Microsoft representative about licensing details.
 
 ### Creating the Azure resources
 
