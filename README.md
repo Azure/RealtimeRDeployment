@@ -30,7 +30,7 @@ First, you must set your credentials so that R can talk to Azure. Edit the file 
 Next, edit the file [`resource_specs.R`](resource_specs.R) to contain the following:
 
 - Your subscription ID
-- The name of the resource group that will hold the resources created
+- The name of the resource group that will hold the resources created. The resource group will be created if it does not already exist.
 - The location of the resource group; for a list of regions where AKS is available, see [this page](https://docs.microsoft.com/en-us/azure/aks/container-service-quotas#region-availability)
 - The names for the ACR and AKS resources to be created
 - The number of nodes for the AKS cluster.

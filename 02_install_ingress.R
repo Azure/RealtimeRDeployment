@@ -17,17 +17,18 @@ deployclus <- deployclus_svc$get_cluster()
 # install nginx ---
 deployclus$helm("init")
 
-# may need to wait a while for a tiller pod
-Sys.sleep(20)
+# may take several seconds for a tiller pod to become available: run this until the installation succeeds
 deployclus$helm("install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --set rbac.create=false")
-
-deployclus$get("service", "--all-namespaces")
 
 
 # install TLS certificate and ingress ---
 
-# get the IP address resource -- run this after an external IP has been assigned to the ingress controller
+# check that the ingress controller is up, and an external IP address has been assigned
+# this can again take several seconds
+deployclus$get("service", "--all-namespaces")
 
+# get the IP address resource
+# run this after an external IP has been assigned to the ingress controller
 cluster_resources <- sub$
     get_resource_group(deployclus_svc$properties$nodeResourceGroup)$
     list_resources()
@@ -54,8 +55,7 @@ inst_certmgr <- gsub("\n", " ", "install stable/cert-manager
 
 deployclus$helm(inst_certmgr)
 
+# deploy certificate and ingress controller
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/cluster-issuer.yaml")))
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/certificates.yaml")))
-
-# deploy ingress controller
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/ingress.yaml")))
