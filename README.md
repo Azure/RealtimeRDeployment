@@ -37,7 +37,7 @@ Next, edit the file [`resource_specs.R`](resource_specs.R) to contain the follow
 
 ## Running the scripts
 
-Note that in general, you should _not_ run these scripts in an automated fashion, eg via `source()` or by pressing <kbd>Ctrl-Shift-Enter</kbd> in RStudio. This is because the process of creating and deploying resources in the cloud involves significant latencies; it's sometimes necessary to wait until a given step has finished before starting on the next step. Because of this, you should step through the scripts line by line, checking at each step that everything works.
+Note that in general, you should _not_ run these scripts in an automated fashion, eg via `source()` or by pressing <kbd>Ctrl-Shift-Enter</kbd> in RStudio. This is because the process of creating and deploying resources in the cloud involves significant latencies; it's sometimes necessary to wait until a given step has finished before starting on the next step. Because of this, you should step through the scripts line by line, following any instructions in the comments.
 
 ### Building the model image
 
