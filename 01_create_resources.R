@@ -4,13 +4,13 @@ library(AzureContainers)
 # create resource group and resources ---
 
 source("resource_specs.R")
-deploysub <- az_rm$
+sub <- az_rm$
     new(config_file="creds.json")$
     get_subscription(sub_id)
 
-deployresgrp <- (if(deploysub$resource_group_exists(rg_name))
-    deploysub$get_resource_group(rg_name)
-else deploysub$create_resource_group(rg_name, location=rg_loc))
+deployresgrp <- (if(sub$resource_group_exists(rg_name))
+    sub$get_resource_group(rg_name)
+else sub$create_resource_group(rg_name, location=rg_loc))
 
 deployresgrp$create_acr(acr_name)
 
