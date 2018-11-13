@@ -49,13 +49,15 @@ RUN sed -i 's/grep docker/grep "kubepods\\|docker"/g' /opt/microsoft/mlserver/9.
     && chmod 666 /home/webnode_usr/.dotnet/corefx/cryptography/x509stores/root/*.pfx \
     && /usr/bin/Rscript configure_jwt_cert.R
 
-####
 
-#### add components required to load model
+##########################################################################################
+#### add tools and packages required to load model: this will vary depending on the model
+##########################################################################################
 
 # install C and Fortran compilers, needed for randomForest
 RUN apt-get install -y make gcc gfortran
 
+# install R package(s)
 RUN Rscript -e "install.packages('randomForest')"
 
 RUN mkdir /data
@@ -63,9 +65,11 @@ COPY data/service.R /data
 COPY data/model.rds /data
 WORKDIR /data
 
-####
 
-#### startup script
+############################################################################################
+#### startup script -- this will also vary depending on the authentication method
+############################################################################################
+
 RUN echo $'#!/bin/bash \n\
 set -e \n\
 /opt/microsoft/mlserver/9.3.0/o16n/startAll.sh \n\
@@ -76,7 +80,7 @@ sleep infinity' > bootstrap.sh
 
 RUN chmod +x bootstrap.sh
 
-####
+############################################################################################
 
 EXPOSE 12800
 ENTRYPOINT ["/data/bootstrap.sh"]
