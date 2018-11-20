@@ -19,5 +19,6 @@ deployclus_svc <- deployresgrp$create_aks(aks_name,
     enable_rbac=FALSE)
 
 # check on the status of the deployment: repeat until deployment succeeds
+# this will take several minutes (usually 10-20)
 deployclus_svc$sync_fields()
 
