@@ -14,11 +14,9 @@ else sub$create_resource_group(rg_name, location=rg_loc))
 
 deployresgrp$create_acr(acr_name)
 
-deployclus_svc <- deployresgrp$create_aks(aks_name,
+# this will take several minutes (usually 10-20)
+deployresgrp$create_aks(aks_name,
     agent_pools=aks_pools("agentpool", num_nodes),
     enable_rbac=FALSE)
 
-# check on the status of the deployment: repeat until deployment succeeds
-# this will take several minutes (usually 10-20)
-deployclus_svc$sync_fields()
 
