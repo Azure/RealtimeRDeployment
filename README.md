@@ -8,7 +8,7 @@ This repository hosts deployment artifacts for the reference architecture "Real-
 
 ## Design
 
-![](design.png)
+![](https://github.com/mspnp/architecture-center/blob/master/docs/reference-architectures/ai/_images/realtime-scoring-r.png)
 
 The workflow in this repository builds a sample machine learning model: a random forest for housing prices, using the Boston housing dataset that ships with R. It then builds a Docker image with the components to host a predictive service:
 - Microsoft Machine Learning Server (only the R components).
