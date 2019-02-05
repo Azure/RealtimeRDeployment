@@ -9,6 +9,10 @@ sub <- az_rm$
 
 deployresgrp <- sub$get_resource_group(rg_name)
 deployclus_svc <- deployresgrp$get_aks(aks_name)
+
+# use stable API version
+deployclus_svc$.__enclos_env__$private$api_version <- "2018-03-31"
+
 deployclus <- deployclus_svc$get_cluster()
 
 

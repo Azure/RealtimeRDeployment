@@ -17,13 +17,15 @@ deployreg <- deployresgrp$
     get_docker_registry()
 deployreg$push("mls-model")
 
-# create the deployment
-deployclus <- deployresgrp$
-    get_aks(aks_name)$
-    get_cluster()
-
 
 # create the deployment and service ---
+
+deployclus_svc <- deployresgrp$get_aks(aks_name)
+
+# use stable API version
+deployclus_svc$.__enclos_env__$private$api_version <- "2018-03-31"
+
+deployclus <- deployclus_svc$get_cluster()
 
 # pass ACR auth details to AKS
 deployclus$create_registry_secret(deployreg, "deploy-registry", email="email-here@example.com")
