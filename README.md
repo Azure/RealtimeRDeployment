@@ -24,9 +24,9 @@ To use this repository, you should have the following:
 
 - A recent version of R. It's recommended to use [Microsoft R Open](https://mran.microsoft.com/open), although the standard R distribution from CRAN will work perfectly well.
 
-- The following packages from the [CloudyR Project](http://cloudyr.github.io/) for working with Azure. You can install these packages with `devtools::install_github("cloudyr/AzureRMR")` and `devtools::install_github("cloudyr/AzureContainers")`.
-  * [AzureRMR](https://github.com/cloudyr/AzureRMR), a package that implements an interface to Azure Resource Manager
-  * [AzureContainers](https://github.com/cloudyr/AzureContainers), an interface to ACR and AKS
+- The following packages for working with Azure. Note that if you are using Microsoft R, they will probably not be in the MRAN snapshot that is your default repository; run `options(repos="https://cloud.r-project.org")` to set your repository to an up-to-date CRAN mirror. before running `install.packages`.
+  * [AzureRMR](https://cran.r-project.org/package=AzureRMR), a package that implements an interface to Azure Resource Manager
+  * [AzureContainers](https://cran.r-project.org/package=AzureContainers), an interface to ACR and AKS
 
 - [Docker](https://www.docker.com/get-started), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [helm](https://www.helm.sh/) installed on your machine.
 
