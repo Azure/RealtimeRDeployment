@@ -35,11 +35,7 @@ To use this repository, you should have the following:
 
 ## Setup
 
-First, you must set your credentials so that R can talk to Azure. Edit the file [`creds.json`](creds.json) so that it contains the following information:
-
-- Your Azure tenant ID
-- Your service principal client/app ID
-- Your service principal authentication password.
+First, you must set your credentials so that R can talk to Azure. Edit the file [`creds.json`](creds.json) so that it contains your Azure tenant ID.
 
 Next, edit the file [`resource_specs.R`](resource_specs.R) to contain the following:
 
