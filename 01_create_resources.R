@@ -4,8 +4,7 @@ library(AzureContainers)
 # create resource group and resources ---
 
 source("resource_specs.R")
-sub <- az_rm$
-    new(config_file="creds.json")$
+sub <- create_azure_login(config_file="creds.json")$
     get_subscription(sub_id)
 
 deployresgrp <- (if(sub$resource_group_exists(rg_name))

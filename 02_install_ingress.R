@@ -3,8 +3,9 @@ library(AzureContainers)
 
 # resource/service objects ---
 source("resource_specs.R")
-sub <- az_rm$
-    new(config_file="creds.json")$
+
+tenant <- jsonlite::fromJSON("creds.json")$tenant
+sub <- get_azure_login(tenant)$
     get_subscription(sub_id)
 
 deployresgrp <- sub$get_resource_group(rg_name)
