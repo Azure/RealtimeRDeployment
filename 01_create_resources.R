@@ -4,8 +4,11 @@ library(AzureContainers)
 # create resource group and resources ---
 
 source("resource_specs.R")
-sub <- create_azure_login(config_file="creds.json")$
-    get_subscription(sub_id)
+az <- try(get_azure_login(tenant), silent=TRUE)
+if(inherits(az, "try-error"))
+    az <- create_azure_login(tenant)
+
+sub <- az$get_subscription(sub_id)
 
 deployresgrp <- (if(sub$resource_group_exists(rg_name))
     sub$get_resource_group(rg_name)

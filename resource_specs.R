@@ -1,5 +1,8 @@
 # change these for your deployment ---
 
+# tenant
+tenant <- "your AAD tenant here"
+
 # subscription ID
 sub_id <- "your subscription here"
 
