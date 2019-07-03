@@ -12,9 +12,9 @@ deployresgrp <- get_azure_login(tenant)$
 ### deploy predictive model as a service
 
 # push image to registry
-deployreg <- deployresgrp$
-    get_acr(acr_name)$
-    get_docker_registry()
+deployreg_svc <- deployresgrp$get_acr(acr_name)
+deployreg <- deployreg_svc$get_docker_registry()
+
 deployreg$push("mls-model")
 
 
@@ -22,13 +22,14 @@ deployreg$push("mls-model")
 
 deployclus_svc <- deployresgrp$get_aks(aks_name)
 
-# use stable API version
-deployclus_svc$set_api_version("2018-03-31")
+# give AKS pull access to ACR
+aks_app_id <- deployclus_svc$properties$servicePrincipalProfile$clientId
+deployreg_svc$add_role_assignment(
+    principal=AzureGraph::get_graph_login(tenant)$get_app(aks_app_id),
+    role="Acrpull"
+)
 
 deployclus <- deployclus_svc$get_cluster()
-
-# pass ACR auth details to AKS
-deployclus$create_registry_secret(deployreg, "deploy-registry", email="email-here@example.com")
 
 deployclus$create(gsub("registryname", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")

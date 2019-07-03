@@ -18,7 +18,6 @@ deployresgrp$create_acr(acr_name)
 
 # this will take several minutes (usually 10-20)
 deployresgrp$create_aks(aks_name,
-    agent_pools=aks_pools("agentpool", num_nodes),
-    enable_rbac=FALSE)
+    agent_pools=aks_pools("agentpool", num_nodes))
 
 
