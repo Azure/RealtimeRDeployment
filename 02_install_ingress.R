@@ -10,9 +10,6 @@ sub <- get_azure_login(tenant)$
 deployresgrp <- sub$get_resource_group(rg_name)
 deployclus_svc <- deployresgrp$get_aks(aks_name)
 
-# use stable API version
-deployclus_svc$set_api_version("2018-03-31")
-
 deployclus <- deployclus_svc$get_cluster()
 
 
