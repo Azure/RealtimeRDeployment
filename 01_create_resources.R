@@ -1,12 +1,19 @@
+library(AzureGraph)
 library(AzureRMR)
 library(AzureContainers)
 
 # create resource group and resources ---
 
 source("resource_specs.R")
+
+# create ARM and Graph logins
 az <- try(get_azure_login(tenant), silent=TRUE)
 if(inherits(az, "try-error"))
-    az <- create_azure_login(tenant)
+    az <- create_azure_login(tenant, auth_type="device_code")
+
+gr <- try(get_graph_login(tenant), silent=TRUE)
+if(inherits(gr, "try-error"))
+    gr <- create_graph_login(tenant, auth_type="device_code")
 
 sub <- az$get_subscription(sub_id)
 

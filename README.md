@@ -26,6 +26,7 @@ To use this repository, you should have the following:
 
 - The following packages for working with Azure. Note that if you are using Microsoft R, they will probably not be in the MRAN snapshot that is your default repository; run `options(repos="https://cloud.r-project.org")` to set your repository to an up-to-date CRAN mirror. before running `install.packages`.
   * [AzureRMR](https://cran.r-project.org/package=AzureRMR), a package that implements an interface to Azure Resource Manager
+  * [AzureGraph](https://cran.r-project.org/package=AzureGraph), an interface to Microsoft Graph
   * [AzureContainers](https://cran.r-project.org/package=AzureContainers), an interface to ACR and AKS
 
 - [Docker](https://www.docker.com/get-started), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [helm](https://www.helm.sh/) installed on your machine.
