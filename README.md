@@ -28,6 +28,7 @@ To use this repository, you should have the following:
   * [AzureRMR](https://cran.r-project.org/package=AzureRMR), a package that implements an interface to Azure Resource Manager
   * [AzureGraph](https://cran.r-project.org/package=AzureGraph), an interface to Microsoft Graph
   * [AzureContainers](https://cran.r-project.org/package=AzureContainers), an interface to ACR and AKS
+  * [AzureKeyVault](https://cran.r-project.org/package=AzureKeyVault), an interface to the Key Vault service
 
 - [Docker](https://www.docker.com/get-started), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [helm](https://www.helm.sh/) installed on your machine.
 
@@ -51,9 +52,7 @@ In general, you should _not_ run these scripts in an automated fashion, eg via `
 
 ### Building the model image
 
-The script [`00_build_image.R`](00_build_image.R) trains a simple model (a random forest for house prices, using the Boston dataset), and then builds the Docker image for the predictive service. The image is about 2GB in size.
-
-The MMLS install used in this image is licensed for development and testing purposes only. For a production image, contact your Microsoft representative about licensing details.
+The script [`00_train_model.R`](00_train_model.R) trains a simple model (a random forest for house prices, using the Boston dataset), and saves the model object to a .RDS file.
 
 ### Creating the Azure resources
 
@@ -65,7 +64,9 @@ The script [`02_install_ingress.R`](02_install_ingress.R) installs nginx on the 
 
 ### Deploying the service
 
-The script [`03_deploy_service.R`](03_deploy_service.R) deploys the actual predictive service. First, it pushes the image built previously to the container registry, and then creates a deployment and service on the Kubernetes cluster using that image. This step involves uploading the image to Azure, so may take some time depending on the speed of your Internet connection. At the end, it brings up the Kubernetes dashboard so you can verify that the deployment has succeeded.
+The script [`03_deploy_service.R`](03_deploy_service.R) deploys the actual predictive service. First, it builds the Docker image for the predictive service, saving the MLS model operationalization password to Key Vault. The image is about 2GB in size. It then pushes the image built previously to the container registry, and creates a deployment and service on the Kubernetes cluster using that image. This step involves uploading the image to Azure, so may take some time depending on the speed of your Internet connection. At the end, it brings up the Kubernetes dashboard so you can verify that the deployment has succeeded.
+
+Note that the MMLS install used in this image is licensed for development and testing purposes only. For a production image, contact your Microsoft representative about licensing details.
 
 ## Testing the service
 

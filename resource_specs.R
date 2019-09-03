@@ -18,6 +18,9 @@ acr_name <- "container registry name"
 # name of Kubernetes cluster
 aks_name <- "cluster name"
 
+# name of Key Vault for storing admin password
+kv_name <- "key vault name"
+
 # number of nodes for cluster agent pool
 # AKS currently only supports one agent pool per cluster
 num_nodes <- 5

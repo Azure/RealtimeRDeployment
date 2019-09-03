@@ -70,11 +70,13 @@ WORKDIR /data
 #### startup script -- this will also vary depending on the authentication method
 ############################################################################################
 
+ARG MLSPASSWORD
+
 RUN echo $'#!/bin/bash \n\
 set -e \n\
 /opt/microsoft/mlserver/9.3.0/o16n/startAll.sh \n\
 /opt/microsoft/mlserver/9.3.0/o16n/Microsoft.MLServer.ComputeNode/autoStartScriptsLinux/computeNode.sh start \n\
-az ml admin node setup --webnode --admin-password "Microsoft@2018" --confirm-password "Microsoft@2018" --uri http://localhost:12805 \n\
+az ml admin node setup --webnode --admin-password "$MLSPASSWORD" --confirm-password "$MLSPASSWORD" --uri http://localhost:12805 \n\
 /usr/bin/Rscript --no-save --verbose service.R \n\
 sleep infinity' > bootstrap.sh
 

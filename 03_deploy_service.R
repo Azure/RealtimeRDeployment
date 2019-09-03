@@ -11,6 +11,16 @@ deployresgrp <- get_azure_login(tenant)$
 
 ### deploy predictive model as a service
 
+# ML Server deployment admin password
+password <- openssl::base64_encode(openssl::rand_bytes(20))
+
+# save the password to Key Vault
+AzureKeyVault::key_vault(kv_name, tenant)$secrets$create("mlsdeploy", password)
+
+# package up the model and container startup script into an image
+cmdline <- paste0("build -t mls-model . --build-arg MLSPASSWORD=", password)
+call_docker(cmdline)
+
 # push image to registry
 deployreg_svc <- deployresgrp$get_acr(acr_name)
 deployreg <- deployreg_svc$get_docker_registry()

@@ -8,7 +8,3 @@ model <- randomForest(medv ~ ., data=Boston, ntree=100)
 # save the model
 saveRDS(model, "data/model.rds")
 
-
-# package up the model and container startup script into an image
-library(AzureContainers)
-call_docker("build -t mls-model .")
