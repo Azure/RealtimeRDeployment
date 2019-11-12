@@ -49,6 +49,7 @@ ip_res$do_operation(
 
 inst_certmgr <- gsub("\n", " ", "install stable/cert-manager
 --namespace kube-system
+--version v0.5.2
 --set ingressShim.defaultIssuerName=letsencrypt-staging
 --set ingressShim.defaultIssuerKind=ClusterIssuer
 --set rbac.create=false
