@@ -22,7 +22,7 @@ token <- httr::content(response)$access_token
 
 # get predictions for a sample of rows
 # MMLS Model Operationalization generates verbose output; consult the documentation for more details
-newdata <- jsonlite::toJSON(list(inputData=MASS::Boston[1:10,]), dataframe="columns")
+newdata <- jsonlite::toJSON(list(inputData=MASS::Boston[1:10, ]), dataframe="columns")
 response <- httr::POST(paste0(ingr_uri, "api/mls-model/1.0.0"),
     httr::add_headers(Authorization=paste0("Bearer ", token),
         `content-type`="application/json"),
