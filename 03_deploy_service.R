@@ -15,7 +15,7 @@ deployresgrp <- get_azure_login(tenant)$
 password <- openssl::base64_encode(openssl::rand_bytes(20))
 
 # save the password to Key Vault
-AzureKeyVault::key_vault(kv_name, tenant)$secrets$create("mlsdeploy", password)
+AzureKeyVault::key_vault(kv_name, tenant, auth_type="device_code")$secrets$create("mlsdeploy", password)
 
 # package up the model and container startup script into an image
 cmdline <- paste0("build -t mls-model . --build-arg MLSPASSWORD=", password)
