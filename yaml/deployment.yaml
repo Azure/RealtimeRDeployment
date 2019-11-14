@@ -19,5 +19,3 @@ spec:
             cpu: 250m
           limits:
             cpu: 500m
-      imagePullSecrets:
-      - name: deploy-registry
