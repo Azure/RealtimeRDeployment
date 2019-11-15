@@ -76,7 +76,7 @@ RUN echo '#!/bin/bash' > bootstrap.sh
 RUN echo "set -e \n\
 /opt/microsoft/mlserver/9.4.7/o16n/startAll.sh \n\
 /opt/microsoft/mlserver/9.4.7/o16n/Microsoft.MLServer.ComputeNode/autoStartScriptsLinux/computeNode.sh start \n\
-az ml admin node setup --webnode --admin-password \"$MLSPASSWORD\" --confirm-password \"$MLSPASSWORD\" --uri http://localhost:12805 \n\
+az mlserver admin node setup --webnode --admin-password \"$MLSPASSWORD\" --confirm-password \"$MLSPASSWORD\" --uri http://localhost:12805 \n\
 /usr/bin/Rscript --no-save --verbose service.R \n\
 sleep infinity" >> bootstrap.sh
 
