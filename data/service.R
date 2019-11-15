@@ -8,7 +8,7 @@ score <- function(inputData)
 
 library(mrsdeploy)
 
-remoteLogin("http://localhost:12800", username="admin", password="Microsoft@2018", session=FALSE)
+remoteLogin("http://localhost:12800", username="admin", password=Sys.getenv("MLSPASSWORD"), session=FALSE)
 api <- publishService("mls-model", v="1.0.0",
     code=score,
     model=model,
