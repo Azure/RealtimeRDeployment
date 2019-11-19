@@ -7,5 +7,5 @@ spec:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     email: email-here@example.com
     privateKeySecretRef:
-      name: letsencrypt-staging
+      name: letsencrypt-prod
     http01: {}

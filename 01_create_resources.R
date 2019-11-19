@@ -1,7 +1,6 @@
 library(AzureGraph)
 library(AzureRMR)
 library(AzureContainers)
-library(AzureKeyVault)
 
 # create resource group and resources ---
 
@@ -21,9 +20,6 @@ sub <- az$get_subscription(sub_id)
 deployresgrp <- (if(sub$resource_group_exists(rg_name))
     sub$get_resource_group(rg_name)
 else sub$create_resource_group(rg_name, location=rg_loc))
-
-# create a Key Vault to store model operationalization admin password
-try(deployresgrp$create_key_vault(kv_name), silent=TRUE)
 
 # create a container registry
 deployresgrp$create_acr(acr_name)

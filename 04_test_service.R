@@ -1,7 +1,7 @@
 source("resource_specs.R")
 
 
-ingr_uri <- paste0("https://ml-model.", rg_loc, ".cloudapp.azure.com/")
+# ingr_uri <- paste0("https://ml-model.", rg_loc, ".cloudapp.azure.com/")
 
 # # need to configure the curl handle to ignore warning about an untrusted cert
 # unverified_handle <- function()
@@ -38,8 +38,9 @@ ingr_uri <- paste0("https://ml-model.", rg_loc, ".cloudapp.azure.com/")
 #     handle=unverified_handle())
 # cat(httr::content(response))
 
+ingr_uri <- "http://52.156.169.134:8000/"
 
 response <- httr::POST(paste0(ingr_uri, "score"),
-    body=list(df=MASS::Boston[1:10,]), encode="json")
+    body=list(df=MASS::Boston[1:10, ]), encode="json")
 httr::content(response, simplifyVector=TRUE)
 

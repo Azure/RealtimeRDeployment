@@ -16,10 +16,17 @@ deployclus <- deployclus_svc$get_cluster()
 ### install ingress controller and enable https
 
 # install nginx ---
-deployclus$helm("init")
+deployclus$kubectl(
+    "apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml")
 
-# may take several seconds for a tiller pod to become available: run this until the installation succeeds
-deployclus$helm("install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --set rbac.create=false")
+deployclus$kubectl(
+    "apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml")
+
+
+# deployclus$helm("init")
+
+# # may take several seconds for a tiller pod to become available: run this until the installation succeeds
+# deployclus$helm("install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --set rbac.create=false")
 
 
 # install TLS certificate and ingress ---
@@ -42,15 +49,15 @@ ip_res$do_operation(
     body=list(
         location=ip_res$location,
         properties=list(
-            dnsSettings=list(domainNameLabel="mls-model"),
+            dnsSettings=list(domainNameLabel="ml-model"),
             publicIPAllocationMethod=ip_res$properties$publicIPAllocationMethod)),
     encode="json",
     http_verb="PUT")
 
-inst_certmgr <- gsub("\n", " ", "install stable/cert-manager
---namespace kube-system
+inst_certmgr <- gsub("\n", " ", "install --name cert-manager stable/cert-manager
+--namespace ingress-nginx
 --version v0.5.2
---set ingressShim.defaultIssuerName=letsencrypt-staging
+--set ingressShim.defaultIssuerName=letsencrypt-prod
 --set ingressShim.defaultIssuerKind=ClusterIssuer
 --set rbac.create=false
 --set serviceAccount.create=false")
