@@ -28,8 +28,7 @@ To use this repository, you should have the following:
   * [AzureRMR](https://cran.r-project.org/package=AzureRMR), a package that implements an interface to Azure Resource Manager
   * [AzureGraph](https://cran.r-project.org/package=AzureGraph), an interface to Microsoft Graph
   * [AzureContainers](https://cran.r-project.org/package=AzureContainers), an interface to ACR and AKS
-  * [AzureKeyVault](https://cran.r-project.org/package=AzureKeyVault), an interface to the Key Vault service
-
+  
 - [Docker](https://www.docker.com/get-started), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [helm](https://www.helm.sh/) installed on your machine.
 
 - An Azure subscription.
