@@ -65,8 +65,6 @@ The script [`02_install_ingress.R`](02_install_ingress.R) installs nginx on the 
 
 The script [`03_deploy_service.R`](03_deploy_service.R) deploys the actual predictive service. First, it builds the Docker image for the predictive service, saving the MLS model operationalization password to Key Vault. The image is about 2GB in size. It then pushes the image built previously to the container registry, and creates a deployment and service on the Kubernetes cluster using that image. This step involves uploading the image to Azure, so may take some time depending on the speed of your Internet connection. At the end, it brings up the Kubernetes dashboard so you can verify that the deployment has succeeded.
 
-Note that the MMLS install used in this image is licensed for development and testing purposes only. For a production image, contact your Microsoft representative about licensing details.
-
 ## Testing the service
 
 The script [`04_test_service.R`](04_test_service.R) tests that the service works properly (which is not the same as testing that the deployment succeeded). It uses the httr package to send requests to the API endpoint; you can check that the responses are as expected.
