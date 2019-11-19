@@ -38,7 +38,6 @@ deployclus <- deployclus_svc$get_cluster()
 deployclus$create(gsub("registryname", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")
 
-
 # check on deployment/service status: can take a few minutes
 deployclus$get("deployment")
 deployclus$get("service", "--all-namespaces")
