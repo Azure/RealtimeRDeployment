@@ -12,20 +12,20 @@ deployresgrp <- get_azure_login(tenant)$
 ### deploy predictive model as a service
 
 # ML Server deployment admin password
-password <- openssl::base64_encode(openssl::rand_bytes(20))
+#password <- openssl::base64_encode(openssl::rand_bytes(20))
 
 # save the password to Key Vault
-AzureKeyVault::key_vault(kv_name, tenant, auth_type="device_code")$secrets$create("mlsdeploy", password)
+#AzureKeyVault::key_vault(kv_name, tenant, auth_type="device_code")$secrets$create("mlsdeploy", password)
 
 # package up the model and container startup script into an image
-cmdline <- paste0("build -t mls-model . --build-arg MLSPASSWORD=", password)
+cmdline <- paste0("build -t ml-model .")
 call_docker(cmdline)
 
 # push image to registry
 deployreg_svc <- deployresgrp$get_acr(acr_name)
 deployreg <- deployreg_svc$get_docker_registry()
 
-deployreg$push("mls-model")
+deployreg$push("ml-model")
 
 
 # create the deployment and service ---
@@ -48,6 +48,8 @@ deployclus$create("yaml/service.yaml")
 # check on deployment/service status: can take a few minutes
 deployclus$get("deployment")
 deployclus$get("service")
+deployclus$get("pods")
+deployclus$kubectl("describe pods")
 
 # display the dashboard
 deployclus$show_dashboard()
