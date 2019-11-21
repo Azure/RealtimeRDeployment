@@ -16,20 +16,9 @@ deployclus <- deployclus_svc$get_cluster()
 ### install ingress controller and enable https
 
 # install nginx ---
-deployclus$kubectl(
-    "apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml")
+deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml")
+deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml")
 
-deployclus$kubectl(
-    "apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml")
-
-
-# deployclus$helm("init")
-
-# # may take several seconds for a tiller pod to become available: run this until the installation succeeds
-deployclus$helm("install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --set rbac.create=false")
-
-
-# install TLS certificate and ingress ---
 
 # check that the ingress controller is up, and an external IP address has been assigned
 # this can again take several seconds
@@ -54,17 +43,4 @@ ip_res$do_operation(
     encode="json",
     http_verb="PUT")
 
-inst_certmgr <- gsub("\n", " ", "install stable/cert-manager
---namespace ingress-nginx
---version v0.5.2
---set ingressShim.defaultIssuerName=letsencrypt-prod
---set ingressShim.defaultIssuerKind=ClusterIssuer
---set rbac.create=false
---set serviceAccount.create=false")
-
-deployclus$helm(inst_certmgr)
-
-# deploy certificate and ingress controller
-deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/cluster-issuer.yaml")))
-deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/certificates.yaml")))
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/ingress.yaml")))

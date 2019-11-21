@@ -18,4 +18,4 @@ spec:
       - path: /
         backend:
           serviceName: ml-model-svc
-          servicePort: 12800
+          servicePort: 8000

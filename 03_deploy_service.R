@@ -31,7 +31,7 @@ deployclus$create("yaml/service.yaml")
 # check on deployment/service status: can take a few minutes
 deployclus$get("deployment")
 deployclus$get("service", "--all-namespaces")
-deployclus$get("pods")
+deployclus$get("pods", "--all-namespaces")
 deployclus$kubectl("describe pods")
 
 # display the dashboard
