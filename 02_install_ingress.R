@@ -13,24 +13,25 @@ deployclus_svc <- deployresgrp$get_aks(aks_name)
 deployclus <- deployclus_svc$get_cluster()
 
 
-### install ingress controller and enable https
-
-# install nginx ---
+# install nginx
 deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml")
 deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml")
 
 
-# check that the ingress controller is up, and an external IP address has been assigned
-# this can again take several seconds
-deployclus$get("service", "--all-namespaces")
+# assign a DNS name to the cluster IP address
+for(i in 1:100)
+{
+    Sys.sleep(5)
+    cluster_resources <- deployclus_svc$list_cluster_resources()
+    res_names <- names(cluster_resources)
+    ip <- grep("Microsoft.Network/publicIPAddresses", res_names)
+    if(!is_empty(ip))
+    {
+        ip_res <- cluster_resources[[ip]]
+        break
+    }
+}
 
-# get the IP address resource
-# run this after an external IP has been assigned to the ingress controller
-cluster_resources <- sub$
-    get_resource_group(deployclus_svc$properties$nodeResourceGroup)$
-    list_resources()
-
-ip_res <- cluster_resources[[grep("IPAddresses", names(cluster_resources))]]
 ip_res$sync_fields()
 
 # assign domain name to IP address of cluster endpoint
@@ -42,5 +43,7 @@ ip_res$do_operation(
             publicIPAllocationMethod=ip_res$properties$publicIPAllocationMethod)),
     encode="json",
     http_verb="PUT")
+
+deployclus$get("service", "--all-namespaces")
 
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/ingress.yaml")))
