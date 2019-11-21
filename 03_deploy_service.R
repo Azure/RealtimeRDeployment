@@ -23,17 +23,7 @@ deployreg$push("ml-model")
 
 
 # create the deployment and service ---
-
-deployclus_svc <- deployresgrp$get_aks(aks_name)
-
-# give AKS pull access to ACR
-aks_app_id <- deployclus_svc$properties$servicePrincipalProfile$clientId
-deployreg_svc$add_role_assignment(
-    principal=AzureGraph::get_graph_login(tenant)$get_app(aks_app_id),
-    role="Acrpull"
-)
-
-deployclus <- deployclus_svc$get_cluster()
+deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 
 deployclus$create(gsub("registryname", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")

@@ -30,3 +30,14 @@ deployresgrp$create_aks(aks_name,
     agent_pools=aks_pools("agentpool", num_nodes))
 
 
+# give the cluster access to the registry
+deployreg_svc <- deployresgrp$get_acr(acr_name)
+deployclus_svc <- deployresgrp$get_aks(aks_name)
+aks_app_id <- deployclus_svc$properties$servicePrincipalProfile$clientId
+
+deployreg_svc$add_role_assignment(
+    principal=AzureGraph::get_graph_login(tenant)$get_app(aks_app_id),
+    role="Acrpull"
+)
+
+
