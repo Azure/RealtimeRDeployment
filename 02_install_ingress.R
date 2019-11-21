@@ -18,7 +18,7 @@ deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/mas
 deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml")
 
 
-# assign a DNS name to the cluster IP address
+# get the IP address of the ingress controller
 for(i in 1:100)
 {
     Sys.sleep(5)
@@ -34,7 +34,7 @@ for(i in 1:100)
 
 ip_res$sync_fields()
 
-# assign domain name to IP address of cluster endpoint
+# assign domain name to IP address
 ip_res$do_operation(
     body=list(
         location=ip_res$location,
