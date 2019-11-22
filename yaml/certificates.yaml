@@ -1,15 +1,15 @@
-apiVersion: cert-manager.io/v1beta
+apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: example-com
+  name: mls-model-cert
   namespace: default
 spec:
   secretName: tls-secret
   duration: 8760h # 365d
   renewBefore: 720h # 30d
-  commonName: ml-model.com
+  commonName: ml-model.resgrouplocation.cloudapp.azure.com
   dnsNames:
   - ml-model.resgrouplocation.cloudapp.azure.com
   issuerRef:
-    name: letsencrypt-prod
+    name: letsencrypt-staging
     kind: Issuer

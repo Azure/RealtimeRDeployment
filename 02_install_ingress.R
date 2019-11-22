@@ -28,7 +28,8 @@ for(i in 1:100)
     if(!is_empty(ip))
     {
         ip_res <- cluster_resources[[ip]]
-        break
+        if(ip_res$sync_fields() == "Succeeded")
+            break
     }
 }
 

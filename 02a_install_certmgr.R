@@ -16,17 +16,6 @@ deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 
 deployclus$apply("https://github.com/jetstack/cert-manager/releases/download/v0.11.0/cert-manager.yaml")
 
-# deployclus$helm("repo add jetstack https://charts.jetstack.io")
-# deployclus$helm("repo update")
-
-# inst_certmgr <- gsub("\n", " ", "install jetstack/cert-manager
-# --namespace ingress-nginx
-# --set rbac.create=false
-# --set serviceAccount.create=false
-# --generate-name")
-
-# deployclus$helm(inst_certmgr)
-
-# deploy certificate and ingress controller
+# define cluster issuer certificate and get certificate
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/cluster-issuer.yaml")))
 deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/certificates.yaml")))
