@@ -18,7 +18,7 @@ deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/mas
 deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml")
 
 
-# get the IP address of the ingress controller
+# get the public IP resource of the ingress controller
 for(i in 1:100)
 {
     Sys.sleep(5)
@@ -45,5 +45,15 @@ ip_res$do_operation(
     http_verb="PUT"
 )
 
-res <- read.table(text=deployclus$get("service", "--all-namespaces")$stdout, header=TRUE, stringsAsFactors=FALSE)
+# wait until ingress controller sees its public IP
+for(i in 1:100)
+{
+    res <- read.table(text=deployclus$get("service", "--all-namespaces")$stdout, header=TRUE, stringsAsFactors=FALSE)
+    has_ip <- res$EXTERNAL.IP[res$NAMESPACE == "ingress-nginx"] != "<pending>"
+    if(has_ip)
+        break
+    Sys.sleep(5)
+}
 
+if(!has_ip)
+    stop("IP address not assigned to ingress controller")

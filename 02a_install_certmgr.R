@@ -35,8 +35,17 @@ deployclus$helm("install cert-manager jetstack/cert-manager --namespace cert-man
 # helm command for v2.x
 # deployclus$helm("install jetstack/cert-manager --name cert-manager --namespace cert-manager --version v0.11.0")
 
-# define cluster issuer certificate and get certificate
-Sys.sleep(5)
-deployclus$apply(gsub("@email@", email, readLines("yaml/cluster-issuer.yaml")))
+# define cluster issuer and get certificate
+for(i in 1:100)
+{
+    Sys.sleep(5)
+    res <- try(deployclus$apply(gsub("@email@", email, readLines("yaml/cluster-issuer.yaml"))))
+    if(!inherits(res, "try-error"))
+        break
+}
+
+if(inherits(res, "try-error"))
+    stop("Unable to create cluster issuer")
+
 
 deployclus$kubectl("describe clusterIssuer letsencrypt-staging")
