@@ -32,7 +32,7 @@ deployclus$create("yaml/service.yaml")
 deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml")))
 
 # add certificate (?)
-deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/certificates.yaml")))
+# deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/certificates.yaml")))
 
 # check on deployment/service status: can take a few minutes
 deployclus$get("clusterIssuer", "--all-namespaces")
@@ -43,9 +43,9 @@ deployclus$get("pods", "--all-namespaces")
 
 # human-readable text
 deployclus$kubectl("describe clusterIssuer letsencrypt-staging")
-deployclus$kubectl("describe certificate ml-model-cert --namespace ingress-nginx")
-deployclus$kubectl("describe certificateRequest ml-model-cert-2092071488 --namespace ingress-nginx")
-deployclus$kubectl("describe pods")
+deployclus$kubectl("describe certificate ml-model-secret --namespace ingress-nginx")
+deployclus$kubectl("describe certificateRequest ml-model-secret-442839315 --namespace ingress-nginx")
+deployclus$kubectl("describe pods --namespace ingress-nginx")
 
 # display the dashboard
 deployclus$show_dashboard()

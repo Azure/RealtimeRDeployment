@@ -22,7 +22,7 @@ deployresgrp <- (if(sub$resource_group_exists(rg_name))
 else sub$create_resource_group(rg_name, location=rg_loc))
 
 # create a container registry
-deployreg_svc <- deployresgrp$create_acr(acr_name)
+deployresgrp$create_acr(acr_name)
 
 # create a Kubernetes cluster
 # this will take several minutes (usually 10-20)
@@ -33,6 +33,7 @@ deployclus_svc <- deployresgrp$create_aks(aks_name,
 
 # give the cluster access to the registry
 aks_app_id <- deployclus_svc$properties$servicePrincipalProfile$clientId
+deployreg_svc <- deployresgrp$get_acr(acr_name)
 deployreg_svc$add_role_assignment(
     principal=AzureGraph::get_graph_login(tenant)$get_app(aks_app_id),
     role="Acrpull"

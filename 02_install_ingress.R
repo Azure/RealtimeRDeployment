@@ -33,6 +33,9 @@ for(i in 1:100)
     }
 }
 
+if(!exists("ip_res") || ip_res$sync_fields() != "Succeeded")
+    stop("Could not create public IP resource")
+
 # assign domain name to IP address
 ip_res$do_operation(
     body=list(
@@ -52,7 +55,7 @@ for(i in 1:100)
     has_ip <- res$EXTERNAL.IP[res$NAMESPACE == "ingress-nginx"] != "<pending>"
     if(has_ip)
         break
-    Sys.sleep(5)
+    Sys.sleep(10)
 }
 
 if(!has_ip)
