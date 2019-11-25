@@ -28,12 +28,13 @@ for(i in 1:100)
     if(!is_empty(ip))
     {
         ip_res <- cluster_resources[[ip]]
-        if(ip_res$sync_fields() == "Succeeded")
+        ip_status <- ip_res$sync_fields()
+        if(ip_status == "Succeeded")
             break
     }
 }
 
-if(!exists("ip_res") || ip_res$sync_fields() != "Succeeded")
+if(!exists("ip_res") || ip_status != "Succeeded")
     stop("Could not create public IP resource")
 
 # assign domain name to IP address
@@ -59,4 +60,4 @@ for(i in 1:100)
 }
 
 if(!has_ip)
-    stop("IP address not assigned to ingress controller")
+    stop("Public IP address not assigned to ingress controller")

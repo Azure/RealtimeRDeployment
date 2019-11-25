@@ -34,7 +34,9 @@ deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml
 # add certificate (?)
 # deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/certificates.yaml")))
 
-# check on deployment/service status: can take a few minutes
+
+### check on deployment/service status
+
 deployclus$get("clusterIssuer", "--all-namespaces")
 deployclus$get("certificate", "--namespace ingress-nginx")
 deployclus$get("deployment", "--all-namespaces")

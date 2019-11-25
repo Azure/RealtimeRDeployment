@@ -17,10 +17,10 @@ deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 deployclus$apply("https://github.com/jetstack/cert-manager/releases/download/v0.11.0/cert-manager.yaml",
                  "--validate=false")
 
-# define cluster issuer and get certificate
-for(i in 1:100)
+# define cluster issuer (can take a few minutes)
+for(i in 1:20)
 {
-    Sys.sleep(10)
+    Sys.sleep(30)
     res <- try(deployclus$apply(gsub("@email@", email, readLines("yaml/cluster-issuer.yaml"))))
     if(!inherits(res, "try-error"))
         break
