@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: ml-model
-        image: registryname.azurecr.io/ml-model
+        image: @registryname@.azurecr.io/ml-model
         ports:
         - containerPort: 8000
         resources:

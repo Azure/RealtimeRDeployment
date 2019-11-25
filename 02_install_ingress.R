@@ -33,18 +33,17 @@ for(i in 1:100)
     }
 }
 
-ip_res$sync_fields()
-
 # assign domain name to IP address
 ip_res$do_operation(
     body=list(
         location=ip_res$location,
         properties=list(
             dnsSettings=list(domainNameLabel="ml-model"),
-            publicIPAllocationMethod=ip_res$properties$publicIPAllocationMethod)),
-    encode="json",
-    http_verb="PUT")
+            publicIPAllocationMethod=ip_res$properties$publicIPAllocationMethod
+        )
+    ),
+    http_verb="PUT"
+)
 
-deployclus$get("service", "--all-namespaces")
+res <- read.table(text=deployclus$get("service", "--all-namespaces")$stdout, header=TRUE, stringsAsFactors=FALSE)
 
-deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/ingress.yaml")))

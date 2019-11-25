@@ -2,14 +2,17 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: mls-model-cert
-  namespace: default
+  namespace: ingress-nginx
 spec:
-  secretName: tls-secret
-  duration: 8760h # 365d
-  renewBefore: 720h # 30d
-  commonName: ml-model.resgrouplocation.cloudapp.azure.com
+  secretName: mls-model-cert
   dnsNames:
-  - ml-model.resgrouplocation.cloudapp.azure.com
+  - ml-model.@resgrouplocation@.cloudapp.azure.com
   issuerRef:
     name: letsencrypt-staging
-    kind: Issuer
+    kind: ClusterIssuer
+  acme:
+    config:
+    - http01:
+        ingressClass: nginx
+      domains:
+      - ml-model.@resgrouplocation@.cloudapp.azure.com

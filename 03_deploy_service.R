@@ -25,13 +25,25 @@ deployreg$push("ml-model")
 # create the deployment and service ---
 deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 
-deployclus$create(gsub("registryname", acr_name, readLines("yaml/deployment.yaml")))
+deployclus$create(gsub("@registryname@", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")
 
+# add ingress route
+deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml")))
+
+# add certificate (?)
+#deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/certificates.yaml")))
+
 # check on deployment/service status: can take a few minutes
+deployclus$get("clusterIssuer", "--all-namespaces")
+deployclus$get("certificate", "--namespace ingress-nginx")
 deployclus$get("deployment")
 deployclus$get("service", "--all-namespaces")
 deployclus$get("pods", "--all-namespaces")
+
+# human-readable text
+deployclus$kubectl("describe clusterIssuer letsencrypt-staging")
+deployclus$kubectl("describe certificate mls-model-cert --namespace ingress-nginx")
 deployclus$kubectl("describe pods")
 
 # display the dashboard

@@ -21,3 +21,6 @@ aks_name <- "cluster name"
 # number of nodes for cluster agent pool
 # AKS currently only supports one agent pool per cluster
 num_nodes <- 3
+
+# email contact address for Let's Encrypt
+email <- "your.email@tenant.com"
