@@ -14,8 +14,7 @@ deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 
 ### install cert-manager
 
-deployclus$apply("https://github.com/jetstack/cert-manager/releases/download/v0.11.0/cert-manager.yaml",
-                 "--validate=false")
+deployclus$apply("https://github.com/jetstack/cert-manager/releases/download/v0.11.0/cert-manager.yaml")
 
 # define cluster issuer (can take a few minutes)
 for(i in 1:20)
