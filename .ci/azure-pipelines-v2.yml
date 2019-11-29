@@ -15,10 +15,6 @@ resources:
       type: github
       name: microsoft/AI
       endpoint: AIArchitecturesAndPractices-GitHub  
-    - repository: razurepipelines
-      type: github
-      name: r-lib/r-azure-pipelines
-      endpoint: AIArchitecturesAndPractices-GitHub
 
 trigger:
   batch: true
@@ -33,10 +29,6 @@ pr:
     - master
 
 stages:
-- stage: test
-  jobs:
-    - template: azure-tidyverse.yml@razurepipelines
-
 - template: .ci/stages/deploy_notebooks_stages_v2.yml@aitemplates
   parameters:
     Agent: $(Agent_Name)
