@@ -15,7 +15,7 @@ resources:
       type: github
       name: microsoft/AI
       endpoint: AIArchitecturesAndPractices-GitHub  
-    - repository: r-azure-pipelines
+    - repository: razurepipelines
       type: github
       name: r-lib/r-azure-pipelines
       endpoint: AIArchitecturesAndPractices-GitHub
@@ -41,4 +41,4 @@ stages:
     workload_vars: ../vars/rml_realtime_scoring.yml
 - stage: test
   jobs:
-    - template: azure-tidyverse.yml@r-azure-pipeline
+    - template: azure-tidyverse.yml@razurepipelines
