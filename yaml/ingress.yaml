@@ -2,17 +2,10 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ml-model-ingress
-  namespace: ingress-nginx
+  namespace: ml-model
   annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-staging
-    # certmanager.k8s.io/cluster-issuer: letsencrypt-staging
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: traefik
 spec:
-  tls:
-  - hosts:
-    - ml-model.@resgrouplocation@.cloudapp.azure.com
-    secretName: ml-model-secret
   rules:
   - host: ml-model.@resgrouplocation@.cloudapp.azure.com
     http:

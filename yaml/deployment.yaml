@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: ml-model
-  namespace: ingress-nginx
+  namespace: ml-model
 spec:
   replicas: 1
   template:

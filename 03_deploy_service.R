@@ -25,10 +25,9 @@ deployreg$push("ml-model")
 # create the deployment and service ---
 deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 
+deployclus$kubectl("create namespace ml-model")
 deployclus$create(gsub("@registryname@", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")
-
-# add ingress route
 deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml")))
 
 # add certificate (?)
@@ -37,8 +36,9 @@ deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml
 
 ### check on deployment/service status
 
+deployclus$get("all --namespace ml-model")
 deployclus$get("clusterIssuer", "--all-namespaces")
-deployclus$get("certificate", "--namespace ingress-nginx")
+deployclus$get("certificate", "--namespace ml-model")
 deployclus$get("deployment", "--all-namespaces")
 deployclus$get("service", "--all-namespaces")
 deployclus$get("pods", "--all-namespaces")

@@ -13,29 +13,36 @@ deployclus_svc <- deployresgrp$get_aks(aks_name)
 deployclus <- deployclus_svc$get_cluster()
 
 
-# install nginx
-deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml")
-deployclus$apply("https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml")
+# install traefik
+deployclus$helm("repo add stable https://kubernetes-charts.storage.googleapis.com/")
+deployclus$helm("repo update")
+
+traefik_yaml <- tempfile(fileext=".yaml")
+writeLines(gsub("@email@", email, readLines("yaml/traefik-values.yaml")), traefik_yaml)
+
+deployclus$helm(paste("install traefik-ingress stable/traefik --namespace kube-system --values", traefik_yaml))
 
 
-# get the public IP resource of the ingress controller
+# wait until ingress controller has a public IP address
 for(i in 1:100)
 {
-    Sys.sleep(5)
-    cluster_resources <- deployclus_svc$list_cluster_resources()
-    res_names <- names(cluster_resources)
-    ip <- grep("Microsoft.Network/publicIPAddresses", res_names)
-    if(!is_empty(ip))
-    {
-        ip_res <- cluster_resources[[ip]]
-        ip_status <- ip_res$sync_fields()
-        if(ip_status == "Succeeded")
-            break
-    }
+    res <- read.table(text=deployclus$get("service", "--all-namespaces")$stdout, header=TRUE, stringsAsFactors=FALSE)
+    has_ip <- res$EXTERNAL.IP[res$NAME == "traefik"] != "<pending>"
+    if(has_ip)
+        break
+    Sys.sleep(10)
 }
 
-if(!exists("ip_res") || ip_status != "Succeeded")
-    stop("Could not create public IP resource")
+if(!has_ip)
+    stop("Public IP address not assigned to ingress controller")
+
+# get the public IP resource of the ingress controller
+cluster_resources <- deployclus_svc$list_cluster_resources()
+ip <- grep("Microsoft.Network/publicIPAddresses", names(cluster_resources))
+if(is_empty(ip))
+    stop("Ingress public IP resource not found")
+ip_res <- cluster_resources[[ip]]
+ip_res$sync_fields()
 
 # assign domain name to IP address
 ip_res$do_operation(
@@ -49,15 +56,3 @@ ip_res$do_operation(
     http_verb="PUT"
 )
 
-# wait until ingress controller sees its public IP
-for(i in 1:100)
-{
-    res <- read.table(text=deployclus$get("service", "--all-namespaces")$stdout, header=TRUE, stringsAsFactors=FALSE)
-    has_ip <- res$EXTERNAL.IP[res$NAMESPACE == "ingress-nginx"] != "<pending>"
-    if(has_ip)
-        break
-    Sys.sleep(10)
-}
-
-if(!has_ip)
-    stop("Public IP address not assigned to ingress controller")
