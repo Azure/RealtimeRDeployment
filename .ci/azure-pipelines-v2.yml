@@ -35,5 +35,3 @@ stages:
     jobDisplayName: RMLAKSDeployAMLJob
     DefaultWorkingDirectory: $(System.DefaultWorkingDirectory)
     workload_vars: ../vars/rml_realtime_scoring.yml
-    flighting_release: false
-    fighting_preview: false
