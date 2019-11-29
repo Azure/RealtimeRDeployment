@@ -29,8 +29,8 @@ deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 deployclus$kubectl("create namespace ml-model")
 
 # basic authentication password
-# you must have an 'auth' file generated with htpasswd, or from https://www.htaccesstools.com/htpasswd-generator/
-deployclus$create("secret", "generic ml-model-secret -f auth --namespace ml-model")
+# you must have an 'auth' file generated with htpasswd, or copied from https://www.htaccesstools.com/htpasswd-generator/
+deployclus$kubectl("create secret generic ml-model-secret --from-file=auth --namespace ml-model")
 
 deployclus$create(gsub("@registryname@", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")

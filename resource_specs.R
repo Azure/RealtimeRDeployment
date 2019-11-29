@@ -24,3 +24,10 @@ num_nodes <- 3
 
 # email contact address for Let's Encrypt
 email <- "your.email@tenant.com"
+
+# service username
+username <- "ml-model-user"
+
+# service password
+password <- stop("Must specify a password!")
+

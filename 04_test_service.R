@@ -8,8 +8,9 @@ httr::BROWSE(ingr_uri_secure)
 httr::content(
     httr::POST(
         ingr_uri_secure,
-        httr::add_headers(authorization=paste0("Basic ", username, ":", password)),
-        body=list(df=MASS::Boston[1:10, ]), encode="json"
+        httr::authenticate(username, password),
+        body=list(df=MASS::Boston[1:10, ]),
+        encode="json"
     ),
     simplifyVector=TRUE
 )
