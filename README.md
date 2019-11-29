@@ -37,15 +37,17 @@ Edit the file [`resource_specs.R`](resource_specs.R) to contain the following:
 - Your Azure Active Directory tenant. This can be either your directory name or a GUID.
 - Your subscription ID.
 - The name of the resource group that will hold the resources created. The resource group will be created if it does not already exist.
-- The location of the resource group; for a list of regions where AKS is available, see [this page](https://docs.microsoft.com/en-us/azure/aks/container-service-quotas#region-availability).
+- The location of the resource group. For a list of regions where AKS is available, see [this page](https://azure.microsoft.com/global-infrastructure/services/?products=kubernetes-service).
 - The names for the ACR and AKS resources to be created.
-- The number of nodes for the AKS cluster.
+- The number of nodes and node VM size for the AKS cluster.
+- Your email address. This is used to obtain a TLS certificate from Let's Encrypt.
+- A (generic) username and password for the predictive service.
 
 ## Deployment steps
 
 ### Generate the service password
 
-You'll need to generate a password to secure the service against unauthorized access. If you have `htpasswd` installed, run this from the commandline, substituting the `password` and `username` from your `resource_specs.R` configuration file:
+You'll need to generate a password to secure the service against unauthorized access. If you are on Linux and have `htpasswd` installed, run this from the commandline, substituting the `password` and `username` from your `resource_specs.R` configuration file:
 
 ```
 echo <password> | htpasswd -c -i auth <username>
@@ -58,13 +60,15 @@ This will create a file `auth` in the current directory that contains the encryp
 - Click on "Create .htpasswd file"
 - Select the generated text, and save it into a file named `auth`.
 
+Next, run the following scripts in order.
+
 ### Building the model image
 
-The script [`00_train_model.R`](00_train_model.R) trains a simple model (a random forest for house prices, using the Boston dataset), and saves the model object to a .RDS file.
+The script [`00_train_model.R`](00_train_model.R) trains a simple model (a random forest for house prices, using the Boston dataset), and saves the model object to a .RDS file. This step is optional, as the repository already contains a suitable model object.
 
 ### Creating the Azure resources
 
-The script [`01_create_resources.R`](01_create_resources.R) checks if the resource group for the deployment exists, and creates it if necessary. It then creates the ACR and AKS resources. Note that creating an AKS resource can take several minutes.
+The script [`01_create_resources.R`](01_create_resources.R) creates the necessary Azure resources for the deployment. Note that creating an AKS cluster can take several minutes.
 
 ### Installing an ingress controller
 
@@ -72,11 +76,11 @@ The script [`02_install_ingress.R`](02_install_ingress.R) installs the Traefik r
 
 ### Deploying the service
 
-The script [`03_deploy_service.R`](03_deploy_service.R) deploys the actual predictive service.
+The script [`03_deploy_service.R`](03_deploy_service.R) pushes the model image to Azure, and deploys the predictive service.
 
 ## Testing the service
 
-The script [`04_test_service.R`](04_test_service.R) tests that the service works properly (which is not the same as testing that the deployment succeeded). It uses the httr package to send requests to the API endpoint; you can check that the responses are as expected.
+The script [`04_test_service.R`](04_test_service.R) tests that the service works properly, by sending a request to the API endpoint; you can check that the responses are as expected.
 
 
 
