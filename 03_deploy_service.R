@@ -22,16 +22,19 @@ deployreg <- deployreg_svc$get_docker_registry()
 deployreg$push("ml-model")
 
 
-# create the deployment and service ---
+### create the deployment, service and ingress route
 deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 
+# namespace for all our objects
 deployclus$kubectl("create namespace ml-model")
+
+# basic authentication password
+# you must have an 'auth' file generated with htpasswd, or from https://www.htaccesstools.com/htpasswd-generator/
+deployclus$create("secret", "generic ml-model-secret -f auth --namespace ml-model")
+
 deployclus$create(gsub("@registryname@", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")
 deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml")))
-
-# add certificate (?)
-# deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/certificates.yaml")))
 
 
 ### check on deployment/service status
