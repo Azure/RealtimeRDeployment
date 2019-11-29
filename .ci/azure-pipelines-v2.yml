@@ -29,7 +29,7 @@ pr:
     - master
 
 stages:
-- template: .ci/stages/deploy_notebooks_stages_v2.yml@aitemplates
+- template: .ci/stages/deploy_container_stages_v2.yml@aitemplates
   parameters:
     Agent: $(Agent_Name)
     jobDisplayName: RMLAKSDeployAMLJob
