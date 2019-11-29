@@ -33,12 +33,13 @@ pr:
     - master
 
 stages:
+- stage: test
+  jobs:
+    - template: azure-tidyverse.yml@razurepipelines
+
 - template: .ci/stages/deploy_notebooks_stages_v2.yml@aitemplates
   parameters:
     Agent: $(Agent_Name)
     jobDisplayName: RMLAKSDeployAMLJob
     DefaultWorkingDirectory: $(System.DefaultWorkingDirectory)
     workload_vars: ../vars/rml_realtime_scoring.yml
-- stage: test
-  jobs:
-    - template: azure-tidyverse.yml@razurepipelines
