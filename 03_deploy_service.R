@@ -38,19 +38,12 @@ deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml
 
 
 ### check on deployment/service status
-
-deployclus$get("all --namespace ml-model")
-deployclus$get("clusterIssuer", "--all-namespaces")
-deployclus$get("certificate", "--namespace ml-model")
-deployclus$get("deployment", "--all-namespaces")
-deployclus$get("service", "--all-namespaces")
-deployclus$get("pods", "--all-namespaces")
+deployclus$get("deployment", "--namespace ml-model")
+deployclus$get("service", "--namespace ml-model")
+deployclus$get("pods", "--namespace ml-model")
 
 # human-readable text
-deployclus$kubectl("describe clusterIssuer letsencrypt-staging")
-deployclus$kubectl("describe certificate ml-model-secret --namespace ingress-nginx")
-deployclus$kubectl("describe certificateRequest ml-model-secret-442839315 --namespace ingress-nginx")
-deployclus$kubectl("describe pods --namespace ingress-nginx")
+deployclus$kubectl("describe deployment --namespace ml-model")
+deployclus$kubectl("describe service --namespace ml-model")
+deployclus$kubectl("describe pods --namespace ml-model")
 
-# display the dashboard
-deployclus$show_dashboard()

@@ -19,7 +19,6 @@ deployclus$helm("repo update")
 
 traefik_yaml <- tempfile(fileext=".yaml")
 writeLines(gsub("@email@", email, readLines("yaml/traefik-values.yaml")), traefik_yaml)
-
 deployclus$helm(paste("install traefik-ingress stable/traefik --namespace kube-system --values", traefik_yaml))
 
 
