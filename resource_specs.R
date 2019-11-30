@@ -31,6 +31,8 @@ email <- "your.email@tenant.com"
 # service username
 username <- "ml-model-user"
 
+app_id <- "your ap id"
+
 # service password
 password <- stop("Must specify a password!")
 
