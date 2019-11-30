@@ -35,4 +35,5 @@ stages:
     jobDisplayName: RMLAKSDeployAMLJob
     DefaultWorkingDirectory: $(System.DefaultWorkingDirectory)
     workload_vars: ../vars/rml_realtime_scoring.yml
+    sp_appid: $(sp_appid)
     sp_password: $(sp_password)
