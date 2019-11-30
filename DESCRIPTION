@@ -1,0 +1,22 @@
+Package: realtimeRDeployment
+Title: Deploy Real Time R Service
+Version: 0.0.0.0
+Authors@R: 
+    c(person(given = "Hong",
+             family = "Ooi",
+             role = c("aut", "cre"),
+             email = "hongooi@microsoft.com",
+             comment = c(ORCID = "0000-0002-2739-7082")),
+      person(given = "RStudio",
+             role = c("cph", "fnd")))
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat (>= 2.1.0),
+    xml2,
+    covr
+URL: https://github.com/Azure/RealtimeRDeployment
+BugReports: https://github.com/Azure/RealtimeRDeployment/issues
+RoxygenNote: 6.1.1
