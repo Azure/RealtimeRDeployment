@@ -9,11 +9,11 @@ source("resource_specs.R")
 # create ARM and Graph logins
 az <- try(get_azure_login(tenant), silent=TRUE)
 if(inherits(az, "try-error"))
-    az <- create_azure_login(tenant, auth_type="device_code")
+    az <- create_azure_login(tenant, app=app_id, password=password)
 
 gr <- try(get_graph_login(tenant), silent=TRUE)
 if(inherits(gr, "try-error"))
-    gr <- create_graph_login(tenant, auth_type="device_code")
+    gr <- create_graph_login(tenant, app=app_id, password=password)
 
 sub <- az$get_subscription(sub_id)
 
