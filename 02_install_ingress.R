@@ -48,7 +48,7 @@ ip_res$do_operation(
     body=list(
         location=ip_res$location,
         properties=list(
-            dnsSettings=list(domainNameLabel="ml-model"),
+            dnsSettings=list(domainNameLabel=aks_name),
             publicIPAllocationMethod=ip_res$properties$publicIPAllocationMethod
         )
     ),

@@ -9,7 +9,7 @@ metadata:
     ingress.kubernetes.io/auth-secret: ml-model-secret
 spec:
   rules:
-  - host: ml-model.@resgrouplocation@.cloudapp.azure.com
+  - host: @aksname@.@resgrouplocation@.cloudapp.azure.com
     http:
       paths:
       - path: /

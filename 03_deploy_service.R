@@ -32,7 +32,10 @@ deployclus$kubectl("create secret generic ml-model-secret --from-file=auth --nam
 ### create the deployment, service and ingress route
 deployclus$create(gsub("@registryname@", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")
-deployclus$apply(gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml")))
+deployclus$apply(
+    gsub("@aksname@", aks_name,
+    gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml"))
+))
 
 
 ### check on deployment/service status

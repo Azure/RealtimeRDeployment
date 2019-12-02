@@ -35,7 +35,7 @@ deployclus_svc <- deployresgrp$create_aks(aks_name,
 aks_app_id <- deployclus_svc$properties$servicePrincipalProfile$clientId
 deployreg_svc <- deployresgrp$get_acr(acr_name)
 deployreg_svc$add_role_assignment(
-    principal=AzureGraph::get_graph_login(tenant)$get_app(aks_app_id),
+    principal=gr$get_app(aks_app_id),
     role="Acrpull"
 )
 

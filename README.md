@@ -38,7 +38,7 @@ Edit the file [`resource_specs.R`](resource_specs.R) to contain the following:
 - Your subscription ID.
 - The name of the resource group that will hold the resources created. The resource group will be created if it does not already exist.
 - The location of the resource group. For a list of regions where AKS is available, see [this page](https://azure.microsoft.com/global-infrastructure/services/?products=kubernetes-service).
-- The names for the ACR and AKS resources to be created.
+- The names for the ACR and AKS resources to be created. The name of the AKS resource, along with its location, will also be used for the domain name label of the cluster.
 - The number of nodes and node VM size for the AKS cluster.
 - Your email address. This is used to obtain a TLS certificate from Let's Encrypt.
 - A (generic) username and password for the predictive service.

@@ -1,6 +1,6 @@
 source("resource_specs.R")
 
-ingr_uri_secure <- sprintf("https://ml-model.%s.cloudapp.azure.com/score", rg_loc)
+ingr_uri_secure <- sprintf("https://%s.%s.cloudapp.azure.com/score", aks_name, rg_loc)
 
 # check the cert is from Lets Encrypt
 httr::BROWSE(ingr_uri_secure)
