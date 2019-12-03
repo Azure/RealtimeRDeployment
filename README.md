@@ -23,7 +23,7 @@ This image is pushed to a Docker registry hosted in Azure, and then deployed to 
 To use this repository, you will need the following:
 
 - A recent version of R. It's recommended to use [Microsoft R Open](https://mran.microsoft.com/open), although the standard R distribution from CRAN will work perfectly well.
-- The [AzureContainers](https://cran.r-project.org/package=AzureContainers) package for working with containers in Azure. You'll need at least version 1.1.2.9000.
+- The [AzureContainers](https://cran.r-project.org/package=AzureContainers) package, version 1.2.0 or later, for working with containers in Azure.
 - [Docker](https://www.docker.com/get-started), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [helm 3](https://www.helm.sh/) installed on your machine.
 
 - An Azure subscription.
