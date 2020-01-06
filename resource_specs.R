@@ -18,9 +18,19 @@ acr_name <- "container registry name"
 # name of Kubernetes cluster
 aks_name <- "cluster name"
 
-# name of Key Vault for storing admin password
-kv_name <- "key vault name"
-
 # number of nodes for cluster agent pool
 # AKS currently only supports one agent pool per cluster
-num_nodes <- 5
+num_nodes <- 3
+
+# VM size for agent pool
+node_size <- "Standard_DS2_v3"
+
+# email contact address for Let's Encrypt
+email <- "your.email@tenant.com"
+
+# service username
+username <- "ml-model-user"
+
+# service password
+password <- stop("Must specify a password!")
+

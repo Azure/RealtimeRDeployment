@@ -1,39 +1,21 @@
 source("resource_specs.R")
 
+ingr_uri_secure <- sprintf("https://%s.%s.cloudapp.azure.com/score", aks_name, rg_loc)
 
-ingr_uri <- paste0("https://mls-model.", rg_loc, ".cloudapp.azure.com/")
+# check the cert is from Lets Encrypt
+httr::BROWSE(ingr_uri_secure)
 
-# need to configure the curl handle to ignore warning about an untrusted cert
-unverified_handle <- function()
-{
-    structure(list(
-        handle=curl::handle_setopt(curl::new_handle(), ssl_verifypeer=FALSE),
-        url=ingr_uri),
-    class="handle")
-}
+# get some predicted values
+res <- httr::POST(
+    ingr_uri_secure,
+    httr::authenticate(username, password),
+    body=list(df=MASS::Boston[1:10, ]),
+    encode="json"
+)
+httr::stop_for_status(res)
 
-# get login token: use same username/password as when creating the service
-response <- httr::POST(paste0(ingr_uri, "login"),
-    body=list(username="admin", password="Microsoft@2018"),
-    encode="json",
-    handle=unverified_handle())
-token <- httr::content(response)$access_token
-
-
-# get predictions for a sample of rows
-# MMLS Model Operationalization generates verbose output; consult the documentation for more details
-newdata <- jsonlite::toJSON(list(inputData=MASS::Boston[1:10,]), dataframe="columns")
-response <- httr::POST(paste0(ingr_uri, "api/mls-model/1.0.0"),
-    httr::add_headers(Authorization=paste0("Bearer ", token),
-        `content-type`="application/json"),
-    body=newdata,
-    handle=unverified_handle())
-httr::content(response, simplifyVector=TRUE)
+pred <- httr::content(res, simplifyVector=TRUE)
+if(length(pred) != 10 || !is.numeric(pred))
+    stop("Bad predictions")
 
 
-# swagger file (if needed, eg for Azure API Management)
-response <- httr::GET(paste0(ingr_uri, "api/mls-model/1.0.0/swagger.json"),
-    httr::add_headers(Authorization=paste0("Bearer ", token),
-        `content-type`="application/json"),
-    handle=unverified_handle())
-cat(httr::content(response))

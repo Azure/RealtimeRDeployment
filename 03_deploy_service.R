@@ -11,43 +11,40 @@ deployresgrp <- get_azure_login(tenant)$
 
 ### deploy predictive model as a service
 
-# ML Server deployment admin password
-password <- openssl::base64_encode(openssl::rand_bytes(20))
-
-# save the password to Key Vault
-AzureKeyVault::key_vault(kv_name, tenant)$secrets$create("mlsdeploy", password)
-
-# package up the model and container startup script into an image
-cmdline <- paste0("build -t mls-model . --build-arg MLSPASSWORD=", password)
-call_docker(cmdline)
+# create Docker image containing the model and startup script
+call_docker("build -t ml-model .")
 
 # push image to registry
 deployreg_svc <- deployresgrp$get_acr(acr_name)
 deployreg <- deployreg_svc$get_docker_registry()
+deployreg$push("ml-model")
 
-deployreg$push("mls-model")
 
+deployclus <- deployresgrp$get_aks(aks_name)$get_cluster()
 
-# create the deployment and service ---
+# namespace for all our objects
+deployclus$kubectl("create namespace ml-model")
 
-deployclus_svc <- deployresgrp$get_aks(aks_name)
+# basic authentication password
+# you must have an 'auth' file generated with htpasswd, or copied from https://www.htaccesstools.com/htpasswd-generator/
+deployclus$kubectl("create secret generic ml-model-secret --from-file=auth --namespace ml-model")
 
-# give AKS pull access to ACR
-aks_app_id <- deployclus_svc$properties$servicePrincipalProfile$clientId
-deployreg_svc$add_role_assignment(
-    principal=AzureGraph::get_graph_login(tenant)$get_app(aks_app_id),
-    role="Acrpull"
-)
-
-deployclus <- deployclus_svc$get_cluster()
-
-deployclus$create(gsub("registryname", acr_name, readLines("yaml/deployment.yaml")))
+### create the deployment, service and ingress route
+deployclus$create(gsub("@registryname@", acr_name, readLines("yaml/deployment.yaml")))
 deployclus$create("yaml/service.yaml")
+deployclus$apply(
+    gsub("@aksname@", aks_name,
+    gsub("@resgrouplocation@", rg_loc, readLines("yaml/ingress.yaml"))
+))
 
 
-# check on deployment/service status: can take a few minutes
-deployclus$get("deployment")
-deployclus$get("service")
+### check on deployment/service status
+deployclus$get("deployment", "--namespace ml-model")
+deployclus$get("service", "--namespace ml-model")
+deployclus$get("pods", "--namespace ml-model")
 
-# display the dashboard
-deployclus$show_dashboard()
+# human-readable text
+deployclus$kubectl("describe deployment --namespace ml-model")
+deployclus$kubectl("describe service --namespace ml-model")
+deployclus$kubectl("describe pods --namespace ml-model")
+

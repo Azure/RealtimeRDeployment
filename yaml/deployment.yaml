@@ -1,23 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: mls-model
+  name: ml-model
+  namespace: ml-model
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: mls-model
+        app: ml-model
     spec:
       containers:
-      - name: mls-model
-        image: registryname.azurecr.io/mls-model
+      - name: ml-model
+        image: @registryname@.azurecr.io/ml-model
         ports:
-        - containerPort: 12800
+        - containerPort: 8000
         resources:
           requests:
             cpu: 250m
           limits:
             cpu: 500m
-      imagePullSecrets:
-      - name: deploy-registry

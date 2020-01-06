@@ -13,50 +13,45 @@ deployclus_svc <- deployresgrp$get_aks(aks_name)
 deployclus <- deployclus_svc$get_cluster()
 
 
-### install ingress controller and enable https
+# install traefik
+deployclus$helm("repo add stable https://kubernetes-charts.storage.googleapis.com/")
+deployclus$helm("repo update")
 
-# install nginx ---
-deployclus$helm("init")
-
-# may take several seconds for a tiller pod to become available: run this until the installation succeeds
-deployclus$helm("install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --set rbac.create=false")
+traefik_yaml <- tempfile(fileext=".yaml")
+writeLines(gsub("@email@", email, readLines("yaml/traefik-values.yaml")), traefik_yaml)
+deployclus$helm(paste("install traefik-ingress stable/traefik --namespace kube-system --values", traefik_yaml))
 
 
-# install TLS certificate and ingress ---
+# wait until ingress controller has a public IP address
+for(i in 1:100)
+{
+    res <- read.table(text=deployclus$get("service", "--all-namespaces")$stdout, header=TRUE, stringsAsFactors=FALSE)
+    has_ip <- res$EXTERNAL.IP[res$NAME == "traefik"] != "<pending>"
+    if(has_ip)
+        break
+    Sys.sleep(10)
+}
 
-# check that the ingress controller is up, and an external IP address has been assigned
-# this can again take several seconds
-deployclus$get("service", "--all-namespaces")
+if(!has_ip)
+    stop("Public IP address not assigned to ingress controller")
 
-# get the IP address resource
-# run this after an external IP has been assigned to the ingress controller
-cluster_resources <- sub$
-    get_resource_group(deployclus_svc$properties$nodeResourceGroup)$
-    list_resources()
-
-ip_res <- cluster_resources[[grep("IPAddresses", names(cluster_resources))]]
+# get the public IP resource of the ingress controller
+cluster_resources <- deployclus_svc$list_cluster_resources()
+ip <- grep("Microsoft.Network/publicIPAddresses", names(cluster_resources))
+if(is_empty(ip))
+    stop("Ingress public IP resource not found")
+ip_res <- cluster_resources[[ip]]
 ip_res$sync_fields()
 
-# assign domain name to IP address of cluster endpoint
+# assign domain name to IP address
 ip_res$do_operation(
     body=list(
         location=ip_res$location,
         properties=list(
-            dnsSettings=list(domainNameLabel="mls-model"),
-            publicIPAllocationMethod=ip_res$properties$publicIPAllocationMethod)),
-    encode="json",
-    http_verb="PUT")
+            dnsSettings=list(domainNameLabel=aks_name),
+            publicIPAllocationMethod=ip_res$properties$publicIPAllocationMethod
+        )
+    ),
+    http_verb="PUT"
+)
 
-inst_certmgr <- gsub("\n", " ", "install stable/cert-manager
---namespace kube-system
---set ingressShim.defaultIssuerName=letsencrypt-staging
---set ingressShim.defaultIssuerKind=ClusterIssuer
---set rbac.create=false
---set serviceAccount.create=false")
-
-deployclus$helm(inst_certmgr)
-
-# deploy certificate and ingress controller
-deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/cluster-issuer.yaml")))
-deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/certificates.yaml")))
-deployclus$apply(gsub("resgrouplocation", rg_loc, readLines("yaml/ingress.yaml")))
