@@ -22,7 +22,7 @@ deployresgrp$create_acr(acr_name)
 # create a Kubernetes cluster -- this will take a few minutes
 deployclus_svc <- deployresgrp$create_aks(aks_name,
     enable_rbac=TRUE,
-    agent_pools=aks_pools("agentpool", num_nodes, node_size))
+    agent_pools=agent_pool("agentpool", num_nodes, node_size))
 
 
 # give the cluster access to the registry

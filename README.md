@@ -24,11 +24,11 @@ To use this repository, you will need the following:
 
 - A recent version of R. It's recommended to use [Microsoft R Open](https://mran.microsoft.com/open), although the standard R distribution from CRAN will work perfectly well.
 - The [AzureContainers](https://cran.r-project.org/package=AzureContainers) package, version 1.2.0 or later, for working with containers in Azure.
+- The [bcrypt](https://cran.r-project.org/package=bcrypt) package, which is used to generate the service authentication password.
 - [Docker](https://www.docker.com/get-started), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [helm 3](https://www.helm.sh/) installed on your machine.
 
 - An Azure subscription.
 
-To generate the service authentication password, you should also have the `htpasswd` utility installed. On Debian, Ubuntu and SUSE, this is part of the `apache2-utils` distribution; on Red Hat and CentOS, it is part of `httpd-tools`. See below for alternatives if this is not installed or unavailable for your OS.
 
 ## Setup
 
@@ -44,23 +44,6 @@ Edit the file [`resource_specs.R`](resource_specs.R) to contain the following:
 - A (generic) username and password for the predictive service.
 
 ## Deployment steps
-
-### Generate the service password
-
-You'll need to generate a password to secure the service against unauthorized access. If you are on Linux and have `htpasswd` installed, run this from the commandline, substituting the `password` and `username` from your `resource_specs.R` configuration file:
-
-```
-echo <password> | htpasswd -c -i auth <username>
-```
-
-This will create a file `auth` in the current directory that contains the encrypted password. If you don't have `htpasswd`, you can create the file using the htpasswd generator site:
-
-- Browse to https://www.htaccesstools.com/htpasswd-generator/
-- Enter the username and password from your `resource_specs.R` file
-- Click on "Create .htpasswd file"
-- Select the generated text, and save it into a file named `auth`.
-
-Next, run the following scripts in order.
 
 ### Building the model image
 
