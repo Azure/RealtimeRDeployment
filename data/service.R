@@ -9,7 +9,7 @@ model <- readRDS("model.rds")
 score <- function(request, response)
 {
     df <- jsonlite::fromJSON(rawToChar(request$body), simplifyDataFrame=TRUE)
-    sc <- predict(bos_rf, df)
+    sc <- predict(model, df)
 
     response$set_body(jsonlite::toJSON(sc, auto_unbox=TRUE))
     response$set_content_type("application/json")
