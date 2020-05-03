@@ -9,7 +9,7 @@ httr::BROWSE(ingr_uri_secure)
 res <- httr::POST(
     ingr_uri_secure,
     httr::authenticate(username, password),
-    body=list(df=MASS::Boston[1:10, ]),
+    body=MASS::Boston[1:10, ],
     encode="json"
 )
 httr::stop_for_status(res)

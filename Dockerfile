@@ -11,4 +11,4 @@ WORKDIR /data
 
 EXPOSE 8000
 
-CMD ["Rscript", "-e", "source('app.R'); backend$start(app, http_port=8080)"]
+CMD ["Rscript", "-e", "source('app.R'); backend$start(app, http_port=8000)"]
